@@ -1,29 +1,43 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 const canvas = document.getElementById("jsCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+ctx.strokeStyle = "#2c2c2c";
+ctx.lineWidth = 2.5;
+
 let painting = false;
 
-function stopPainging() {
+function stopPainting() {
   painting = false;
 }
 
+function startPainting() {
+  painting = true;
+}
+
 function onMouseMove(e) {
-  if (!painting) return;
   const x = e.offsetX;
   const y = e.offsetY;
 
-  console.log(`x : ${x}, y : ${y}`);
+  if (!painting) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  } else {
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
 }
 
 function onMouseDown(e) {
   console.log(e);
   painting = true;
 }
-function onMouseUp(e) {
-  stopPainging();
-}
 
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
-  canvas.addEventListener("mousedown", onMouseDown);
-  canvas.addEventListener("mouseup", onMouseUp);
-  canvas.addEventListener("mouseleave", stopPainging());
+  canvas.addEventListener("mousedown", startPainting);
+  canvas.addEventListener("mouseup", stopPainting);
+  canvas.addEventListener("mouseleave", stopPainting);
 }
