@@ -1,6 +1,10 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
+const colors = document.getElementsByClassName("jsColor");
+Array.from(colors).forEach((prop) =>
+  prop.addEventListener("click", hd_colorPick)
+);
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -15,6 +19,11 @@ function stopPainting() {
 
 function startPainting() {
   painting = true;
+}
+
+function hd_colorPick(e) {
+  const color = e.target.style.backgroundColor;
+  ctx.strokeStyle = color;
 }
 
 function onMouseMove(e) {
